@@ -1,0 +1,15 @@
+module ldr_mux(sel,din,rin,out);
+input [31:0] rin,din;
+input sel;
+output reg [31:0] out;
+
+always @*
+begin
+case(sel)
+
+1'b1: out = din; // select = 1 ouput is LDR data from ram
+1'b0: out = rin; // select = 0 output = result from the alu
+
+endcase
+end
+endmodule
