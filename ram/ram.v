@@ -1,4 +1,4 @@
-module ram (addr,rw,din,dout,fetch,f,clk,enable);
+module ram (addr,rw,din,dout,fetch,clk,enable);
 
 input clk,enable; //data in 
 input [1:0] rw; //readwrite
@@ -12,27 +12,27 @@ always @ (posedge clk) //synchronous
 begin
 	if (enable)
 	begin
-	
-		if (rw==2'b00) //not ldr or str
-		begin
-		fetch <= ram[addr]; 
-		end
-		else //read or write
-		begin
-			if (rw==2'b01) 
-			begin    
-				dout <= ram[addr]; //read
+	casex(rw)
+	2'b01: dout <= ram[addr]; //read
+	2'b10: ram[addr] <= din; //write
+		default: fetch <= ram[addr]; //not read write and takes from counter
+	endcase
 
-			end
+//previous
+//		if (rw==2'b01) //read
+//		begin
+//		dout <= ram[addr];
+//		end
+//		else if (rw==2'b10) //write
+//		begin
+//		ram[addr] <= din;
+//		end
+//		
+//		else //address from counter
+//		begin
+//		fetch <= ram[addr]; //does not read or write, gets intruction fetch from the counter data
+//		end
 	
-			else
-			begin
-				ram[addr] <= din; //write
-		
-			end
-
-			
-		end
 	end
 	
 	else
@@ -43,5 +43,4 @@ begin
 	end
 end
 endmodule
-
 
