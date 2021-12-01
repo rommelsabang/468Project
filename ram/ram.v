@@ -12,13 +12,12 @@ always @ (posedge clk) //synchronous
 begin
 	if (enable)
 	begin
-	casex(rw)
-	2'b01: dout <= ram[addr]; //read
-	2'b10: ram[addr] <= din; //write
-		default: fetch <= ram[addr]; //not read write and takes from counter
+	casez(rw)
+	2'b01: dout = ram[addr]; //read
+	2'b10: ram[addr] = din; //write
+	default: fetch = ram[addr]; 
 	endcase
 
-//previous
 //		if (rw==2'b01) //read
 //		begin
 //		dout <= ram[addr];
