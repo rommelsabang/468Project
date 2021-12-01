@@ -63,7 +63,7 @@ cmpr1r2 cmp1(a, b, c1n, c1z, c1c, c1v);
 	cond cnc1(c1n, c1z, c1c, c1v, a, b, inf[31:28], tc1);
 movr1r2 mov1(a, mr1, mr1n, mr1z, mr1c, mr1v);
 	cond cnmr1(mr1n, mr1z, mr1c, mr1v, a, b, inf[31:28], tmr1);
-movr1n movn1(a, mn1, mn1n, mn1z, mn1c, mn1v);
+movr1n movn1(inf[18:3], mn1, mn1n, mn1z, mn1c, mn1v);
 	cond cnmn1(mn1n, mn1z, mn1c, mn1v, a, b, inf[31:28], tmn1);
 
 lsl lsl1(inf[10:6], a, ll1);
@@ -84,7 +84,7 @@ cmpr1r2 cmp2(ll1, b, c2n, c2z, c2c, c2v);
 	cond cnc2(c2n, c2z, c2c, c2v, a, ll1, inf[31:28], tc2);
 movr1r2 mov2(ll1, mr2, mr2n, mr2z, mr2c, mr2v);
 	cond cnmr2(mr2n, mr2z, mr2c, mr2v, a, ll1, inf[31:28], tmr2);
-movr1n movn2(ll1, mn2, mn2n, mn2z, mn2c, mn2v);
+movr1n movn2(inf[18:3], mn2, mn2n, mn2z, mn2c, mn2v);
 	cond cnmn2(mn2n, mn2z, mn2c, mn2v, a, ll1, inf[31:28], tmn2);
 
 lsr lsr1(inf[10:6], a, lr1);
@@ -105,7 +105,7 @@ cmpr1r2 cmp3(lr1, b, c3n, c3z, c3c, c3v);
 	cond cnc3(c3n, c3z, c3c, c3v, a, lr1, inf[31:28], tc3);
 movr1r2 mov3(lr1, mr3, mr3n, mr3z, mr3c, mr3v);
 	cond cnmr3(mr3n, mr3z, mr3c, mr3v, a, lr1, inf[31:28], tmr3);
-movr1n movn3(lr1, mn3, mn3n, mn3z, mn3c, mn3v);
+movr1n movn3(inf[18:3], mn3, mn3n, mn3z, mn3c, mn3v);
 	cond cnmn3(mn3n, mn3z, mn3c, mn3v, a, lr1, inf[31:28], tmn3);
 
 rr rrs1(inf[10:6], a, rr1);
@@ -126,7 +126,7 @@ cmpr1r2 cmp4(rr1, a, c4n, c4z, c4c, c4v);
 	cond cnc4(c4n, c4z, c4c, c4v, a, rr1, inf[31:28], tc4);
 movr1r2 mov4(rr1, mr4, mr4n, mr4z, mr4c, mr4v);
 	cond cnmr4(mr4n, mr4z, mr4c, mr4v, a, rr1, inf[31:28], tmr4);
-movr1n movn4(rr1, mn4, mn4n, mn4z, mn4c, mn4v);
+movr1n movn4(inf[18:3], mn4, mn4n, mn4z, mn4c, mn4v);
 	cond cnmn4(mn4n, mn4z, mn4c, mn4v, a, rr1, inf[31:28], tmn4);
 
 always @*
@@ -158,16 +158,16 @@ begin
 			 	if(inf[23] == 1'b1) begin n = m2n; z = m2z; c = m2c; v = m2v; end
 			end
 			else begin r = r; end
-		4'b0011:if(tan2 == 1'b1)
-			begin 
-				r = an2;
-			 	if(inf[23] == 1'b1) begin n = an2n; z = an2z; c = an2c; v = an2v; end
-			end
-			else begin r = r; end
-		4'b0100:if(to2 == 1'b1)
+		4'b0011:if(to2 == 1'b1)
 			begin 
 				r = o2;
 			 	if(inf[23] == 1'b1) begin n = o2n; z = o2z; c = o2c; v = o2v; end
+			end
+			else begin r = r; end
+		4'b0100:if(tan2 == 1'b1)
+			begin 
+				r = an2;
+			 	if(inf[23] == 1'b1) begin n = an2n; z = an2z; c = an2c; v = an2v; end
 			end
 			else begin r = r; end
 		4'b0101:if(te2 == 1'b1)
@@ -176,22 +176,22 @@ begin
 			 	if(inf[23] == 1'b1) begin n = e2n; z = e2z; c = e1c; v = e2v; end
 			end
 			else begin r = r; end
-		4'b0110:if(tc2 == 1'b1)
-			begin
-				n = c2n; z = c2z; c = c2c; v = c2v; r = r;
+		4'b0110:if(tmn2 == 1'b1)  
+			begin 
+				r = mn2;
+			 	if(inf[23] == 1'b1) begin n = mn2n; z = mn2z; c = mn2c; v = mn2v; end
 			end
+			else begin r = r; end
 		4'b0111:if(tmr2 == 1'b1) 
 			begin 
 				r = mr2;
 			 	if(inf[23] == 1'b1) begin n = mr2n; z = mr2z; c = mr2c; v = mr2v; end
 			end
 			else begin r = r; end
-		4'b1000:if(tmn2 == 1'b1)  
-			begin 
-				r = mn2;
-			 	if(inf[23] == 1'b1) begin n = mn2n; z = mn2z; c = mn2c; v = mn2v; end
+		4'b1000:if(tc2 == 1'b1)
+			begin
+				n = c2n; z = c2z; c = c2c; v = c2v; r = r;
 			end
-			else begin r = r; end
 		default: r = r;
 		endcase
 	end
@@ -216,16 +216,16 @@ begin
 			 	if(inf[23] == 1'b1) begin n = m3n; z = m3z; c = m3c; v = m3v; end
 			end
 			else begin r = r; end
-		4'b0011:if(tan3 == 1'b1)
-			begin 
-				r = an3;
-			 	if(inf[23] == 1'b1) begin n = an3n; z = an3z; c = an3c; v = an3v; end
-			end
-			else begin r = r; end
-		4'b0100:if(to3 == 1'b1)
+		4'b0011:if(to3 == 1'b1)
 			begin 
 				r = o3;
 			 	if(inf[23] == 1'b1) begin n = o3n; z = o3z; c = o3c; v = o3v; end
+			end
+			else begin r = r; end
+		4'b0100:if(tan3 == 1'b1)
+			begin 
+				r = an3;
+			 	if(inf[23] == 1'b1) begin n = an3n; z = an3z; c = an3c; v = an3v; end
 			end
 			else begin r = r; end
 		4'b0101:if(te3 == 1'b1)
@@ -234,22 +234,22 @@ begin
 			 	if(inf[23] == 1'b1) begin n = e3n; z = e3z; c = e3c; v = e3v; end
 			end
 			else begin r = r; end
-		4'b0110:if(tc3 == 1'b1)
-			begin
-				n = c3n; z = c3z; c = c3c; v = c3v; r = r;
+		4'b0110:if(tmn3 == 1'b1)  
+			begin 
+				r = mn3;
+			 	if(inf[23] == 1'b1) begin n = mn3n; z = mn3z; c = mn3c; v = mn3v; end
 			end
+			else begin r = r; end
 		4'b0111:if(tmr3 == 1'b1) 
 			begin 
 				r = mr3;
 			 	if(inf[23] == 1'b1) begin n = mr3n; z = mr3z; c = mr3c; v = mr3v; end
 			end
 			else begin r = r; end
-		4'b1000:if(tmn3 == 1'b1)  
-			begin 
-				r = mn3;
-			 	if(inf[23] == 1'b1) begin n = mn3n; z = mn3z; c = mn3c; v = mn3v; end
+		4'b1000:if(tc3 == 1'b1)
+			begin
+				n = c3n; z = c3z; c = c3c; v = c3v; r = r;
 			end
-			else begin r = r; end
 		default: r = r;
 		endcase
 	end
@@ -274,16 +274,16 @@ begin
 			 	if(inf[23] == 1'b1) begin n = m4n; z = m4z; c = m4c; v = m4v; end
 			end
 			else begin r = r; end
-		4'b0011:if(tan4 == 1'b1)
-			begin 
-				r = an4;
-			 	if(inf[23] == 1'b1) begin n = an4n; z = an4z; c = an4c; v = an4v; end
-			end
-			else begin r = r; end
-		4'b0100:if(to4 == 1'b1)
+		4'b0011:if(to4 == 1'b1)
 			begin 
 				r = o4;
 			 	if(inf[23] == 1'b1) begin n = o4n; z = o4z; c = o4c; v = o4v; end
+			end
+			else begin r = r; end
+		4'b0100:if(tan4 == 1'b1)
+			begin 
+				r = an4;
+			 	if(inf[23] == 1'b1) begin n = an4n; z = an4z; c = an4c; v = an4v; end
 			end
 			else begin r = r; end
 		4'b0101:if(te4 == 1'b1)
@@ -292,22 +292,22 @@ begin
 			 	if(inf[23] == 1'b1) begin n = e3n; z = e3z; c = e3c; v = e3v; end
 			end
 			else begin r = r; end
-		4'b0110:if(tc4 == 1'b1)
-			begin
-				n = c4n; z = c4z; c = c4c; v = c4v; r = r;
+		4'b0110:if(tmn4 == 1'b1)  
+			begin 
+				r = mn4;
+			 	if(inf[23] == 1'b1) begin n = mn4n; z = mn4z; c = mn4c; v = mn4v; end
 			end
+			else begin r = r; end
 		4'b0111:if(tmr4 == 1'b1) 
 			begin 
 				r = mr4;
 			 	if(inf[23] == 1'b1) begin n = mr4n; z = mr4z; c = mr4c; v = mr4v; end
 			end
 			else begin r = r; end
-		4'b1000:if(tmn4 == 1'b1)  
-			begin 
-				r = mn4;
-			 	if(inf[23] == 1'b1) begin n = mn4n; z = mn4z; c = mn4c; v = mn4v; end
+		4'b1000:if(tc4 == 1'b1)
+			begin
+				n = c4n; z = c4z; c = c4c; v = c4v; r = r;
 			end
-			else begin r = r; end
 		default: r = r;
 		endcase
 	end
@@ -332,16 +332,16 @@ begin
 			 	if(inf[23] == 1'b1) begin n = m1n; z = m1z; c = m1c; v = m1v; end
 			end
 			else begin r = r; end
-		4'b0011:if(tan1 == 1'b1)
-			begin 
-				r = an1;
-			 	if(inf[23] == 1'b1) begin n = an1n; z = an1z; c = an1c; v = an1v; end
-			end
-			else begin r = r; end
-		4'b0100:if(to1 == 1'b1)
+		4'b0011:if(to1 == 1'b1)
 			begin 
 				r = o1;
 			 	if(inf[23] == 1'b1) begin n = o1n; z = o1z; c = o1c; v = o1v; end
+			end
+			else begin r = r; end
+		4'b0100:if(tan1 == 1'b1)
+			begin 
+				r = an1;
+			 	if(inf[23] == 1'b1) begin n = an1n; z = an1z; c = an1c; v = an1v; end
 			end
 			else begin r = r; end
 		4'b0101:if(te1 == 1'b1)
@@ -350,22 +350,22 @@ begin
 			 	if(inf[23] == 1'b1) begin n = e1n; z = e1z; c = e1c; v = e1v; end
 			end
 			else begin r = r; end
-		4'b0110:if(tc1 == 1'b1)
-			begin
-				n = c1n; z = c1z; c = c1c; v = c1v; r = r;
+		4'b0110:if(tmn1 == 1'b1)  
+			begin 
+				r = mn1;
+			 	if(inf[23] == 1'b1) begin n = mn1n; z = mn1z; c = mn1c; v = mn1v; end
 			end
+			else begin r = r; end
 		4'b0111:if(tmr1 == 1'b1) 
 			begin 
 				r = mr1;
 			 	if(inf[23] == 1'b1) begin n = mr1n; z = mr1z; c = mr1c; v = mr1v; end
 			end
 			else begin r = r; end
-		4'b1000:if(tmn1 == 1'b1)  
-			begin 
-				r = mn1;
-			 	if(inf[23] == 1'b1) begin n = mn1n; z = mn1z; c = mn1c; v = mn1v; end
+		4'b1000:if(tc1 == 1'b1)
+			begin
+				n = c1n; z = c1z; c = c1c; v = c1v; r = r;
 			end
-			else begin r = r; end
 		default: r = r;
 		endcase
 	end
