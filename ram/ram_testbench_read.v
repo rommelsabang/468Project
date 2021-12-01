@@ -15,9 +15,9 @@ begin
 
 
 	CLK = 0;
-#5   ENABLE =0;   RW=2'b0;	ADDR=32'd0;  	
-#10 ENABLE =1;   RW=2'b01;	ADDR=32'd0;	
-#10 ENABLE =1;   RW=2'b01;	ADDR=32'd1;	
+#5   ENABLE =0;   RW=2'bxx;	ADDR=32'd0;  	
+#10 ENABLE =1;   RW=2'bxx;	ADDR=32'd0;	
+#10 ENABLE =1;   RW=2'b00;	ADDR=32'd1;	
 #10 ENABLE =1;   RW=2'b01;	ADDR=32'd2;	
 #10 ENABLE =1;   RW=2'b01;	ADDR=32'd3;	
 #10 ENABLE =1;   RW=2'b01;	ADDR=32'd4;	
@@ -32,7 +32,7 @@ end
 
 initial
 begin
-$monitor($time, " data at ADDR %b is %b", ADDR, DOUT);
+$monitor($time, " data at ADDR %b is %b and fetch is %b", ADDR, DOUT,FETCH);
 end
 
 always #5 CLK=~CLK;
