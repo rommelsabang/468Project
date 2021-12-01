@@ -15,17 +15,18 @@ begin
 
 
 	CLK = 0;
-   ENABLE =0;   RW=2'b0;	ADDR=32'd0;  	
-#5 ENABLE =1;   RW=2'b01;	ADDR=32'd0;	
-#5 ENABLE =1;   RW=2'b01;	ADDR=32'd1;	
-#5 ENABLE =1;   RW=2'b01;	ADDR=32'd2;	
-#5 ENABLE =1;   RW=2'b01;	ADDR=32'd3;	
-#5 ENABLE =1;   RW=2'b01;	ADDR=32'd4;	
-#5 ENABLE =1;   RW=2'b01;	ADDR=32'd5;	
-#5 ENABLE =1;   RW=2'b01;	ADDR=32'd6;	
-#5 ENABLE =1;   RW=2'b01;	ADDR=32'd7;	
+#5   ENABLE =0;   RW=2'b0;	ADDR=32'd0;  	
+#10 ENABLE =1;   RW=2'b01;	ADDR=32'd0;	
+#10 ENABLE =1;   RW=2'b01;	ADDR=32'd1;	
+#10 ENABLE =1;   RW=2'b01;	ADDR=32'd2;	
+#10 ENABLE =1;   RW=2'b01;	ADDR=32'd3;	
+#10 ENABLE =1;   RW=2'b01;	ADDR=32'd4;	
+#10 ENABLE =1;   RW=2'b01;	ADDR=32'd5;	
+#10 ENABLE =1;   RW=2'b01;	ADDR=32'd6;	
+#10 ENABLE =1;   RW=2'b01;	ADDR=32'd7;	
 
-#50 $finish; 
+
+#150 $finish; 
 end
 
 
